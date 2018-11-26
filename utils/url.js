@@ -1,0 +1,1 @@
+export const getUrl = companyId => `https://sandbox-quickbooks.api.intuit.com/v3/company/${companyId}/`

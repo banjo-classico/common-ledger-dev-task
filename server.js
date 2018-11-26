@@ -50,14 +50,6 @@ app.prepare()
 
     });
 
-    server.get('/home', (req, res) => {
-      return handle(req, res)
-    })
-
-    server.get('/account', (req, res) => {
-      return app.render(req, res, '/account')
-    })
-
     server.get('*', (req, res) => {
       return handle(req, res)
     })
