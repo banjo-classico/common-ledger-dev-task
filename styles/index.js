@@ -30,16 +30,29 @@ export const sectionStyle = {
   margin: '0 0 50px 0'
 }
 
+export const crudContainer = {
+  display: 'flex',
+  flexWrap: 'wrap',
+  width: '100%'
+}
+
 export const crudBox = {
   border: '1px solid grey',
   borderRadius: '3px',
   padding: '15px',
-  width: '100%',
-  margin: '0 10px'
+  width: '43%',
+  margin: '10px'
 }
 
 export const input = {
   padding: '5px',
   fontSize: '16px',
+  margin: '10px 0'
+}
+
+export const textarea = {
+  padding: '5px',
+  fontSize: '14px',
+  height: '70px',
   margin: '10px 0'
 }
