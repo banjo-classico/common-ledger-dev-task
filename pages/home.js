@@ -6,18 +6,12 @@ import CrudBox from '../components/crud-box'
 import { getCookie, setCookie } from '../utils/cookies'
 import { getUrl } from '../utils/url'
 import { container, sectionStyle } from '../styles'
+import withAuth from '../components/with-auth';
 
-class Account extends Component {
-  static async getInitialProps({ req }) {
-    const token = getCookie('token', req)  
-    const companyId = getCookie('companyId', req)  
-    return { accessToken: token.access_token, companyId }
-  }
-
+class Home extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      isLoading: true,
       query: '',
       entity: '',
       response: null,
@@ -26,20 +20,13 @@ class Account extends Component {
     };
   }
 
-  componentDidMount() {
-        if(!this.props.token) {
-      // Router.push('/')
-    }
-    this.setState({ isLoading: false })
-  }
-
   handleChange = key => e => {
     e.preventDefault()
     this.setState({ [key]: e.target.value })
   }
 
   handleSubmit = key => () => {
-    const { accessToken, companyId } = this.props
+    const { token, companyId } = this.props
     const { entity, query, section } = this.state
     const baseUrl = getUrl(companyId)
     let url
@@ -48,7 +35,7 @@ class Account extends Component {
       headers: {
         'Content-Type': 'application/json;',
         'Accept': 'application/json',
-        'Authorization': `Bearer ${accessToken}`
+        'Authorization': `Bearer ${token.access_token}`
         // "Content-Type": "application/x-www-form-urlencoded",
       }
     }
@@ -76,10 +63,7 @@ class Account extends Component {
       <div style={container}>
         <SideMenu changeSection={this.changeSection} />
         <div style={{ padding: '30px', width: '100%' }}>
-        {
-          this.state.isLoading
-          ? <div>LOADING....</div>
-          : <div style={{ margin: '0 0 30px' }}>
+          <div style={{ margin: '0 0 30px' }}>
               <div style={sectionStyle}>{section.toUpperCase()}</div>
               <div style={{ display: 'flex', width: '100%' }}>
                 <CrudBox
@@ -96,16 +80,15 @@ class Account extends Component {
                 />
               </div>
             </div>
-        }
-        {
-          fetching
-          ? 'PROCESSING...'
-          : response && <div><pre>{JSON.stringify(response, null, 2)}</pre></div>
-        }
+          {
+            fetching
+            ? 'PROCESSING...'
+            : response && <div><pre>{JSON.stringify(response, null, 2)}</pre></div>
+          }
         </div>
       </div>
     )
   }
 }
 
-export default Account
+export default withAuth(Home)

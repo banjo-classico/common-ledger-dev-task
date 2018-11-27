@@ -20,7 +20,6 @@ const oauthClient = new OAuthClient({
 })
 
 const authUri = oauthClient.authorizeUri({ scope: [OAuthClient.scopes.Accounting, OAuthClient.scopes.OpenId], state: 'testState' });
-let oauth2_token_json = null
 
 app.prepare()
   .then(() => {
@@ -37,7 +36,7 @@ app.prepare()
     server.get('/oauth_callback', function (req, res) {
       oauthClient.createToken(req.url)
       .then(function (authResponse) {
-        oauth2_token_json = JSON.stringify(authResponse.getJson(), null, 2);
+        const oauth2_token_json = JSON.stringify(authResponse.getJson(), null, 2);
         const realmId = oauthClient.getToken().realmId
         res.cookie('token', oauth2_token_json, { maxAge: 3600000 })
         res.cookie('companyId', realmId, { maxAge: 3600000 })
@@ -46,8 +45,6 @@ app.prepare()
       .catch(function (e) {
         console.error(e);
       });
-
-
     });
 
     server.get('*', (req, res) => {
